@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="../static/logo.jfif" alt="" class="bi me-2" width="40" height="32" aria-hidden="true">
+        <span class="fs-4">Nubel's Digital Academy</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="home.html" class="nav-link active" aria-current="page">Home</a></li>
+        <li class="nav-item"><a href="service.html" class="nav-link">Services</a></li>
+        <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
+        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+    </ul>
+</header>
+</div>
+
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+        <div class="col-lg-7 text-center text-lg-start">
+            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Start Your Tech Journey Today</h1>
+            <p class="col-lg-10 fs-4" style="text-align: justify;">
+                Ready to build valuable skills and take the next step in your career? <b>Nubels Digital Academy</b> provides practical, hands-on training designed to help you learn, grow, and succeed in the digital world.
+            </p>
+            <p class="col-lg-10 fs-4" style="text-align: justify;">
+                Fill out the form to tell us a little about yourself and select the course you are interested in. Our team will get in touch with you with more information about the training, registration process, and next steps.
+            </p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action="{{url_for('contact')}}" method="POST">
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" class="form-control" id="floatingname" placeholder="John Doe" required>
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="number" class="form-control" id="floatingnumber" placeholder="+2349087653422" required>
+                    <label for="floatingInput">Phone Number</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="floatingInput"  placeholder="name@example.com" required>
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class="form-select" id="course"  name="course" required>
+                        <option selected disabled value="">Choose...</option>
+                        <option>Web Development</option>
+                        <option>Data Analysis</option>
+                        <option>Full-Stack Development</option>
+                        <option>Cybersecurity</option>
+                        <option>Robotics</option>
+                        <option>Project Management</option>
+                    </select>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+                <hr class="my-4">
+                <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="home.html" class="nav-link px-2 text-body-secondary">Home</a></li>
+            <li class="nav-item"><a href="service.html" class="nav-link px-2 text-body-secondary">Services</a></li>
+            <li class="nav-item"><a href="courses.html" class="nav-link px-2 text-body-secondary">Courses</a></li>
+            <li class="nav-item"><a href="about.html" class="nav-link px-2 text-body-secondary">About</a></li>
+            <li class="nav-item"><a href="" class="nav-link px-2 text-body-secondary">About</a></li>
+        </ul>
+        <p class="text-center text-body-secondary">© 2025 Nubel's Digital Academy</p>
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
