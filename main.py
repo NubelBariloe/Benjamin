@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import json
 from smtplib import SMTP_SSL
 from email.message import EmailMessage
+from random import randint
 
 app = Flask(__name__, template_folder='html')
 
@@ -9,9 +10,13 @@ app = Flask(__name__, template_folder='html')
 def home():
     return render_template('home.html')
 
+@app.route('/home.html')
+def back():
+    return render_template('home.html')
 
 @app.route('/service.html')
-def service():
+def service():git status
+
     return render_template('service.html')
 
 @app.route('/courses.html')
@@ -26,6 +31,7 @@ def about():
 def contact():
     password = "gxue dors rfbw fsdi"
     my_email = "nubelbariloe133@gmail.com"
+    regnum = randint(111, 999)
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -35,7 +41,7 @@ def contact():
 
         body = f"""
         Thank you for registering for the {course} course at Nubels Digital Academy.
-
+        your registration number is {regnum}
         We're delighted to have you join us and look forward to supporting you throughout your learning journey. Get ready to learn, develop new skills, and make the most of your training experience.
 
         Thank you for choosing Nubels Digital Academy.
@@ -57,14 +63,24 @@ def contact():
             connection.login(my_email, password)
             connection.send_message(email_msg)
 
-            student = {
-                    "name": name,
-                    "course": course,
-                    "number": number,
-                    "email": email,}
-            with open("ben.json", "w") as file:
-                json.dump(student, file, indent=4)
+            try:
+                with open("ben.json", "r") as file:
+                    data = json.load(file)
+            except (FileNotFoundError, json.JSONDecodeError):
+                data = []
 
+            student = {
+                "name": name,
+                "course": course,
+                "number": number,
+                "email": email,
+                "registration": regnum,
+            }
+
+            data.append(student)
+
+            with open("ben.json", "w") as file:
+                json.dump(data, file, indent=4)
 
     return render_template("contacts.html")
 

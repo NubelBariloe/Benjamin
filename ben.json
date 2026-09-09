@@ -1,6 +1,23 @@
-{
-    "name": "nubel bariloe",
-    "course": "Cybersecurity",
-    "number": "09078243611",
-    "email": "nubelbariloe0@gmail.com"
-}
+[
+    {
+        "name": "nubel bariloe",
+        "course": "Project Management",
+        "number": "09078243611",
+        "email": "nubelbariloe0@gmail.com",
+        "registration": 293
+    },
+    {
+        "name": "nubel bariloe",
+        "course": "Web Development",
+        "number": "09078243611",
+        "email": "domaxofweb3@gmail.com",
+        "registration": 725
+    },
+    {
+        "name": "nubel bariloe",
+        "course": "Cybersecurity",
+        "number": "09078243611",
+        "email": "nubelbariloe0@gmail.com",
+        "registration": 294
+    }
+]
