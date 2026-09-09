@@ -81,6 +81,8 @@ def contact():
             with open("ben.json", "w") as file:
                 json.dump(data, file, indent=4)
 
+            return render_template("home.html")
+
     return render_template("contacts.html")
 
 if __name__ == '__main__':
