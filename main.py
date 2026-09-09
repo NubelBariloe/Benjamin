@@ -15,8 +15,7 @@ def back():
     return render_template('home.html')
 
 @app.route('/service.html')
-def service():git status
-
+def service():
     return render_template('service.html')
 
 @app.route('/courses.html')
