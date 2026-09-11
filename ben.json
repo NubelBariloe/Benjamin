@@ -1,44 +1,20 @@
 [
     {
-        "name": "nubel bariloe",
-        "course": "Project Management",
-        "number": "09078243611",
-        "email": "nubelbariloe0@gmail.com",
-        "registration": 293
+        "name": "Evergreen",
+        "course": "Data Analysis",
+        "number": "09034088466",
+        "email": "greatmangreenfield@gmail.com",
+        "registration": 42352,
+        "password": "123456",
+        "score": "67"
     },
     {
-        "name": "nubel bariloe",
-        "course": "Web Development",
-        "number": "09078243611",
-        "email": "domaxofweb3@gmail.com",
-        "registration": 725
-    },
-    {
-        "name": "nubel bariloe",
-        "course": "Cybersecurity",
+        "name": "Nubel bariloe",
+        "course": "Data Analysis",
         "number": "09078243611",
         "email": "nubelbariloe0@gmail.com",
-        "registration": 294
-    },
-    {
-        "name": "nubel bariloe",
-        "course": "Robotics",
-        "number": "09078243611",
-        "email": "nubelbariloe0@gmail.com",
-        "registration": 346
-    },
-    {
-        "name": "nubel bariloe",
-        "course": "Robotics",
-        "number": "09078243611",
-        "email": "nubelbariloe0@gmail.com",
-        "registration": 231
-    },
-    {
-        "name": "nubel bariloe",
-        "course": "Full-Stack Development",
-        "number": "09078243611",
-        "email": "nubelbariloe0@gmail.com",
-        "registration": 402
+        "registration": 42803,
+        "password": "123",
+        "score": "56"
     }
 ]

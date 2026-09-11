@@ -17,6 +17,8 @@
         <li class="nav-item"><a href="service.html" class="nav-link">Services</a></li>
         <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
         <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="Logg.html" class="nav-link">Login</a></li>
+
     </ul>
 </header>
 </div>
@@ -36,31 +38,9 @@
         <div class="col-md-10 mx-auto col-lg-5">
             <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action="{{url_for('contact')}}" method="POST">
                 <div class="form-floating mb-3">
-                    <input type="text" name="name" class="form-control" id="floatingname" placeholder="John Doe" required>
-                    <label for="floatingInput">Name</label>
+                    {% from 'bootstrap5/form.html' import render_form %}
+                    {{ render_form(form) }}
                 </div>
-                <div class="form-floating mb-3">
-                    <input type="text" name="number" class="form-control" id="floatingnumber" placeholder="+2349087653422" required>
-                    <label for="floatingInput">Phone Number</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="email" name="email" class="form-control" id="floatingInput"  placeholder="name@example.com" required>
-                    <label for="floatingInput">Email address</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <select class="form-select" id="course"  name="course" required>
-                        <option selected disabled value="">Choose...</option>
-                        <option>Web Development</option>
-                        <option>Data Analysis</option>
-                        <option>Full-Stack Development</option>
-                        <option>Cybersecurity</option>
-                        <option>Robotics</option>
-                        <option>Project Management</option>
-                    </select>
-                </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-                <hr class="my-4">
-                <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
             </form>
         </div>
     </div>
@@ -74,7 +54,6 @@
             <li class="nav-item"><a href="service.html" class="nav-link px-2 text-body-secondary">Services</a></li>
             <li class="nav-item"><a href="courses.html" class="nav-link px-2 text-body-secondary">Courses</a></li>
             <li class="nav-item"><a href="about.html" class="nav-link px-2 text-body-secondary">About</a></li>
-            <li class="nav-item"><a href="" class="nav-link px-2 text-body-secondary">About</a></li>
         </ul>
         <p class="text-center text-body-secondary">© 2025 Nubel's Digital Academy</p>
     </footer>

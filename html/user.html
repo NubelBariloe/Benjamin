@@ -18,22 +18,24 @@
         <li class="nav-item"><a href="service.html" class="nav-link">Services</a></li>
         <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
         <li class="nav-item"><a href="about.html" class="nav-link" >About</a></li>
-        <li class="nav-item"><a href="Logg.html" class="nav-link active" aria-current="page">Login</a></li>
+        <li class="nav-item"><a href="user.html" class="nav-link active" aria-current="page">{{name}}</a></li>
     </ul>
 </header>
 </div>
 
+
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="row align-items-center g-lg-5 py-5">
         <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome to Nubel’s Digital Academy</h1>
+            <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome {{name}}</h1>
             <p class="col-lg-10 fs-4" style="text-align: justify;">
-                Enter your credentials below to access your student portal, view your courses, and track your progress.
-                Build Your Future with Technology.
+                <b>Ready Check Your Score</b><br>
+                <b>Your hard work is worth seeing!</b><br>
+                Enter your candidate details below to check your examination result and view your performance.
             </p>
         </div>
         <div class="col-md-10 mx-auto col-lg-5">
-            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action="{{url_for('logg')}}" method="POST">
+            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" action="{{url_for('user')}}" method="POST">
                 <div class="form-floating mb-3">
                     {% if message %}
                     <div class="error-message">
@@ -47,6 +49,36 @@
             </form>
         </div>
     </div>
+</div>
+
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <table border="1" cellpadding="10px" class="table table-bordered table-hover table-striped", style="width: 100%; text-align: center">
+    <tr>
+        <th>Name</th>
+        <td>{{ student.name }}</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>{{ student.email }}</td>
+    </tr>
+
+    <tr>
+        <th>Course</th>
+        <td>{{ student.course }}</td>
+    </tr>
+
+    <tr>
+        <th>Score</th>
+        <td>{{ student.score }}</td>
+    </tr>
+
+    <tr>
+        <th>Number</th>
+        <td>{{ student.number }}</td>
+    </tr>
+</table>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

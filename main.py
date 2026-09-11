@@ -1,10 +1,30 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, url_for, session
 import json
 from smtplib import SMTP_SSL
 from email.message import EmailMessage
 from random import randint
+from flask_bootstrap import Bootstrap5
+from flask_wtf import FlaskForm
+import requests
+from wtforms import StringField, PasswordField, SubmitField, SelectField, form
+from wtforms.validators import DataRequired, Email, EqualTo, Length
+
+
 
 app = Flask(__name__, template_folder='html')
+app.secret_key = "ben"
+Bootstrap5(app)
+
+
+class RegistrationForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    number = StringField("Phone Number", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    course = SelectField(choices=([('Data Analysis', 'Data Analysis'), ('front-end development', 'Front-end Development')]), validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    confirm = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    submit = SubmitField("Login")
+
 
 @app.route('/')
 def home():
@@ -28,15 +48,17 @@ def about():
 
 @app.route('/contacts.html', methods=['GET', 'POST'])
 def contact():
-    password = "gxue dors rfbw fsdi"
+    passwords = "gxue dors rfbw fsdi"
     my_email = "nubelbariloe133@gmail.com"
-    regnum = randint(111, 999)
+    regnum = randint(11111, 99999)
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        email =form.email.data
+        course = form.course.data
+        number = form.number.data
+        password = form.password.data
+        name = form.name.data
 
-    if request.method == "POST":
-        email = request.form.get("email")
-        name = request.form.get("name")
-        course = request.form.get("course")
-        number = request.form.get("number")
 
         body = f"""
         Thank you for registering for the {course} course at Nubels Digital Academy.
@@ -59,7 +81,7 @@ def contact():
 
 
         with SMTP_SSL("smtp.gmail.com", 465, timeout=30) as connection:
-            connection.login(my_email, password)
+            connection.login(my_email, passwords)
             connection.send_message(email_msg)
 
             try:
@@ -74,6 +96,7 @@ def contact():
                 "number": number,
                 "email": email,
                 "registration": regnum,
+                "password": password
             }
 
             data.append(student)
@@ -83,7 +106,118 @@ def contact():
 
             return render_template("home.html")
 
-    return render_template("contacts.html")
+    return render_template("contacts.html", form=form)
+
+
+class LoginForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Login")
+
+@app.route('/Logg.html', methods=['GET', 'POST'])
+def logg():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+
+        with open("ben.json", "r") as file:
+            data = json.load(file)
+            for account in data:
+                if account["email"].strip().lower() == email.strip().lower() and account["password"] == password:
+                    session["name"] = account.get("name")
+                    return redirect(url_for("user"))
+                elif email == "nubelbariloe01@gmail.com" and password == "admin":
+                    session["name"] = "Admin"
+                    return redirect(url_for("admin"))
+
+            message = "Wrong email or password"
+            return render_template("Logg.html", form=form, message=message)
+    return render_template("Logg.html", form=form)
+
+@app.route('/user.html', methods=['GET', 'POST'])
+def user():
+    if "name" not in session:
+        return redirect(url_for("logg"))
+
+
+    class ResultForm(FlaskForm):
+        name = StringField("Name", validators=[DataRequired()])
+        regnum = StringField("Registration Number", validators=[DataRequired()])
+        submit = SubmitField("Check My Result")
+
+    form = ResultForm()
+
+    name = ""
+    student = None
+    if form.validate_on_submit():
+        name = form.name.data
+        regnum = form.regnum.data
+
+    with open("ben.json", "r") as file:
+        data = json.load(file)
+
+
+    for account in data:
+        if account["name"] == name and account["registration"] == int(regnum):
+            student = {
+                "name": account["name"],
+                "email": account["email"],
+                "score": account["score"],
+                "course": account["course"],
+                "number": account["number"],
+                "password": account["password"]
+        }
+
+    return render_template("user.html", form=form, name=session["name"], student=student)
+
+
+
+    return render_template("user.html", form=form, name=session["name"])
+
+
+@app.route('/admin.html', methods=['GET', 'POST'])
+def admin():
+    if "name" not in session:
+        return redirect(url_for("logg"))
+
+    class ResultForm(FlaskForm):
+        reg = StringField("Registration Number", validators=[DataRequired()])
+        score = StringField("Score", validators=[DataRequired()])
+        submit = SubmitField("Update Result")
+
+    form = ResultForm()
+
+    if form.validate_on_submit():
+        reg = form.reg.data
+        score = form.score.data
+
+        with open("ben.json", "r") as file:
+            data = json.load(file)
+
+        found = False
+
+        for account in data:
+            if account["registration"] == int(reg):
+                account["score"] = score
+                found = True
+                break
+
+        if found:
+            with open("ben.json", "w") as file:
+                json.dump(data, file, indent=4)
+                message = "score added successfully"
+                return redirect(url_for("admin", message=message))
+        else:
+            messg = "Registration number not found"
+            return render_template("admin.html", form=form, message=messg)
+    with open("ben.json", "r") as file:
+        data = json.load(file)
+    return render_template("admin.html", form=form, name=session["name"], students=data)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
