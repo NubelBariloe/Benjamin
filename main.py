@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, url_for, session
-import json
 from smtplib import SMTP_SSL
 from email.message import EmailMessage
 from random import randint
@@ -90,6 +89,14 @@ def contact():
         password = form.password.data
         name = form.name.data
         username = form.username.data
+
+        users = User.query.filter_by(username=username).first()
+        if users:
+            message = "username already exists"
+            return render_template("contacts.html", form=form, message=message)
+        student = User.query.filter_by(registration=regnum).first()
+        if student:
+            regnum = randint(11111, 99999)
 
 
         body = f"""

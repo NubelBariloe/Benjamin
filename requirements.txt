@@ -4,7 +4,6 @@ Bootstrap-Flask==2.6.0
 certifi==2026.7.22
 charset-normalizer==3.5.1
 click==8.5.0
-Django==6.1.1
 dnspython==2.8.0
 docopt==0.6.2
 dominate==2.9.1
