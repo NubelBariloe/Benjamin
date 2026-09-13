@@ -53,32 +53,33 @@
 
 
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-    <table border="1" cellpadding="10px" class="table table-bordered table-hover table-striped", style="width: 100%; text-align: center">
+    {% if student %}
+    <table border="1" class="table table-bordered table-hover table-striped", style="width: 100%; text-align: center">
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Name</th>
+            <th>email</th>
+            <th>phone</th>
+            <th>username</th>
+            <th>course</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+
+        <tbody>
     <tr>
-        <th>Name</th>
+        <td>{{ student.registration }}</td>
         <td>{{ student.name }}</td>
-    </tr>
-
-    <tr>
-        <th>Email</th>
         <td>{{ student.email }}</td>
-    </tr>
-
-    <tr>
-        <th>Course</th>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.username }}</td>
         <td>{{ student.course }}</td>
-    </tr>
-
-    <tr>
-        <th>Score</th>
         <td>{{ student.score }}</td>
     </tr>
-
-    <tr>
-        <th>Number</th>
-        <td>{{ student.number }}</td>
-    </tr>
+</tbody>
 </table>
+    {% endif %}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

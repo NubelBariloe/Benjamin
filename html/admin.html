@@ -60,11 +60,12 @@
     <table border="1" class="table table-bordered table-hover table-striped", style="width: 100%; text-align: center">
     <thead>
         <tr>
-            <th>Name</th>
             <th>Registration Number</th>
-            <th>course</th>
-            <th>number</th>
+            <th>Name</th>
             <th>email</th>
+            <th>Phone Number</th>
+            <th>Username</th>
+            <th>course</th>
             <th>password</th>
             <th>Score</th>
         </tr>
@@ -73,13 +74,14 @@
     <tbody>
         {% for student in students %}
         <tr>
-            <td>{{ student["name"] }}</td>
-            <td>{{ student["registration"] }}</td>
-            <td>{{student["course"]}}</td>
-            <td>{{student["number"]}}</td>
-            <td>{{student["email"]}}</td>
-            <td>{{student["password"]}}</td>
-            <td>{{ student["score"] }}</td>
+            <td>{{ student.registration}}</td>
+            <td>{{ student.name }}</td>
+            <td>{{student.email}}</td>
+            <td>{{student.phone}}</td>
+            <td>{{student.username}}</td>
+            <td>{{student.course}}</td>
+            <td>{{student.password}}</td>
+            <td>{{ student.score}}</td>
 
         </tr>
         {% endfor %}

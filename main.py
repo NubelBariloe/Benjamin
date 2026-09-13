@@ -8,19 +8,50 @@ from flask_wtf import FlaskForm
 import requests
 from wtforms import StringField, PasswordField, SubmitField, SelectField, form
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase,Mapped, mapped_column, Session
 
+class Base(DeclarativeBase):
+  pass
 
+db = SQLAlchemy(model_class=Base)
+
+# create the app
 
 app = Flask(__name__, template_folder='html')
 app.secret_key = "ben"
 Bootstrap5(app)
+
+# configure the SQLite database, relative to the app instance folder
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///school.db"
+# initialize the app with the extension
+db.init_app(app)
+
+print("Database connected!")
+class User(db.Model):
+    registration: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str]
+    name: Mapped[str]
+    phone: Mapped[str]
+    password: Mapped[str]
+    course: Mapped[str]
+    username: Mapped[str] = mapped_column(unique=True)
+    score: Mapped[str | None] = mapped_column(nullable=True)
+
 
 
 class RegistrationForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     number = StringField("Phone Number", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    course = SelectField(choices=([('Data Analysis', 'Data Analysis'), ('front-end development', 'Front-end Development')]), validators=[DataRequired()])
+    username = StringField("Username", validators=[DataRequired()])
+    course = SelectField(choices=([('Data Analysis', 'Data Analysis'),
+                                   ('full-stack development', 'Full-Stack Development'),
+                                   ('project management', 'Project Management'),
+                                   ('robotics', 'Robotics'),
+                                   ('Web development', 'Web Development'),
+                                   ('cybersecurity','Cybersecurity')]),
+                         validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     confirm = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Login")
@@ -58,6 +89,7 @@ def contact():
         number = form.number.data
         password = form.password.data
         name = form.name.data
+        username = form.username.data
 
 
         body = f"""
@@ -84,26 +116,17 @@ def contact():
             connection.login(my_email, passwords)
             connection.send_message(email_msg)
 
-            try:
-                with open("ben.json", "r") as file:
-                    data = json.load(file)
-            except (FileNotFoundError, json.JSONDecodeError):
-                data = []
-
-            student = {
-                "name": name,
-                "course": course,
-                "number": number,
-                "email": email,
-                "registration": regnum,
-                "password": password
-            }
-
-            data.append(student)
-
-            with open("ben.json", "w") as file:
-                json.dump(data, file, indent=4)
-
+            with app.app_context():
+                db.create_all()
+                db.session.add(User(email= email,
+                                    registration=regnum,
+                                    name= name,
+                                    password=password,
+                                    course=course,
+                                    username=username,
+                                    phone=number
+                                    ))
+                db.session.commit()
             return render_template("home.html")
 
     return render_template("contacts.html", form=form)
@@ -121,17 +144,15 @@ def logg():
         email = form.email.data
         password = form.password.data
 
+        users = User.query.filter_by(email=email, password=password).first()
 
-        with open("ben.json", "r") as file:
-            data = json.load(file)
-            for account in data:
-                if account["email"].strip().lower() == email.strip().lower() and account["password"] == password:
-                    session["name"] = account.get("name")
-                    return redirect(url_for("user"))
-                elif email == "nubelbariloe01@gmail.com" and password == "admin":
-                    session["name"] = "Admin"
-                    return redirect(url_for("admin"))
-
+        if users:
+            session["name"] = users.name
+            return redirect(url_for("user"))
+        elif email == "nubelbariloe01@gmail.com" and password == "admin":
+            session["name"] = "Admin"
+            return redirect(url_for("admin"))
+        else:
             message = "Wrong email or password"
             return render_template("Logg.html", form=form, message=message)
     return render_template("Logg.html", form=form)
@@ -140,6 +161,7 @@ def logg():
 def user():
     if "name" not in session:
         return redirect(url_for("logg"))
+    names = session.get("name")
 
 
     class ResultForm(FlaskForm):
@@ -149,32 +171,18 @@ def user():
 
     form = ResultForm()
 
-    name = ""
-    student = None
     if form.validate_on_submit():
-        name = form.name.data
         regnum = form.regnum.data
+        name = form.name.data
 
-    with open("ben.json", "r") as file:
-        data = json.load(file)
-
-
-    for account in data:
-        if account["name"] == name and account["registration"] == int(regnum):
-            student = {
-                "name": account["name"],
-                "email": account["email"],
-                "score": account["score"],
-                "course": account["course"],
-                "number": account["number"],
-                "password": account["password"]
-        }
-
-    return render_template("user.html", form=form, name=session["name"], student=student)
+        users = User.query.filter_by(registration=regnum, name=name).first()
 
 
 
-    return render_template("user.html", form=form, name=session["name"])
+        return render_template("user.html", form=form, name=session["name"], student=users)
+
+    return render_template("user.html", form=form, name=names, student=None)
+
 
 
 @app.route('/admin.html', methods=['GET', 'POST'])
@@ -193,28 +201,16 @@ def admin():
         reg = form.reg.data
         score = form.score.data
 
-        with open("ben.json", "r") as file:
-            data = json.load(file)
+        users = User.query.filter_by(registration=reg).first()
+        if users:
+            users.score = score
+            db.session.commit()
 
-        found = False
+    user = User.query.all()
 
-        for account in data:
-            if account["registration"] == int(reg):
-                account["score"] = score
-                found = True
-                break
 
-        if found:
-            with open("ben.json", "w") as file:
-                json.dump(data, file, indent=4)
-                message = "score added successfully"
-                return redirect(url_for("admin", message=message))
-        else:
-            messg = "Registration number not found"
-            return render_template("admin.html", form=form, message=messg)
-    with open("ben.json", "r") as file:
-        data = json.load(file)
-    return render_template("admin.html", form=form, name=session["name"], students=data)
+
+    return render_template("admin.html", form=form, name=session["name"], students=user)
 
 
 
