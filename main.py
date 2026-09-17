@@ -299,8 +299,8 @@ def contact():
         # SEND REGISTRATION EMAIL
         # -------------------------------------------------
 
-        my_email = os.environ.get("MAIL_USERNAME")
-        mail_password = os.environ.get("MAIL_PASSWORD")
+        my_email = os.environ.get("nubelbariloe133@gmail.com")
+        mail_password = os.environ.get("gxue dors rfbw fsdi")
 
 
         if my_email and mail_password:
