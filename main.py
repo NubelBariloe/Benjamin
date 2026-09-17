@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, session
 from smtplib import SMTP_SSL
+import os
 from email.message import EmailMessage
 from random import randint
 from flask_bootstrap import Bootstrap5
@@ -22,7 +23,13 @@ app.secret_key = "ben"
 Bootstrap5(app)
 
 # configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///school.db"
+database_url = os.environ.get("sqlite:///school.db")
+
+if database_url:
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///school.db"
+
 # initialize the app with the extension
 db.init_app(app)
 
